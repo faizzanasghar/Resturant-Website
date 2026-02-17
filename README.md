@@ -1,6 +1,3 @@
-# Resturant-Website
-My final project of ICT and my first website which made in html , CSS and javaScript.
-
 # 🍕 Delizia Craft Pizza - Static Website
 
 A modern, responsive restaurant ordering website for **Delizia Craft Pizza**. 

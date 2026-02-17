@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Delizia Craft Pizza</title>
+    <link rel="stylesheet" href="styles-modern.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="practicepage.html" class="logo">
+                <img src="images/webpage logo2.jpg" alt="Delizia Craft" class="logo-img">
+            </a>
+            <ul>
+                <li><a href="practicepage.html">Home</a></li>
+                <li><a href="products.html">Menu</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="login.html">Log In</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section>
+        <div class="login-container">
+            <h2>Login</h2>
+            <div id="error-message" class="error-message"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="error-text"></span>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="register.html">Sign up</a></p>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <b>&copy; 2024 Delizi craft pizza. All rights reserved.</b>
+        </div>
+    </footer>
+
+    <script src="api-client.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+
+            // Clear previous errors
+            document.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+            errorMessage.textContent = '';
+            errorMessage.classList.remove('show', 'success');
+
+            try {
+                const loader = showLoader();
+                const result = await api.login(username.value, password.value);
+                hideLoader(loader);
+
+                if (result.success) {
+                    errorMessage.textContent = `Welcome ${result.user.firstname}!`;
+                    errorMessage.classList.add('show', 'success');
+
+                    setTimeout(() => {
+                        if (result.user.role === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'practicepage.html';
+                        }
+                    }, 1000);
+                }
+            } catch (error) {
+                if (window.hideLoader) hideLoader(document.getElementById('globalLoader'));
+                errorMessage.textContent = error.message;
+                errorMessage.classList.add('show');
+            }
+        });
+    </script>
+</body>
+
+</html>
