@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Explore Delizia Craft Pizza's menu with a variety of pizzas made with fresh ingredients.">
+  <title>Menu - Delizia Craft Pizza</title>
+  <link rel="stylesheet" href="styles-modern.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="practicepage.html" class="logo">
+        <img src="images/webpage logo2.jpg" alt="Delizia Craft" class="logo-img">
+      </a>
+      <ul>
+        <li><a href="practicepage.html">Home</a></li>
+        <li><a href="products.html">Menu</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="login.html">Log In</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Menu Section -->
+  <section id="menu" class="menu">
+    <div class="container">
+      <h2>Our Menu</h2>
+
+      <!-- Dynamic Menu Container -->
+      <div id="dynamic-menu">
+        <p style="text-align:center;">Loading menu...</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Delizia Craft Pizza. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="cart-functions.js"></script>
+  <script src="menu-search.js"></script>
+  <script src="api-client.js"></script>
+
+  <script>
+    // Function to add items to cart
+    function addItemToCart(itemName, itemPrice) {
+      const item = {
+        id: Date.now(), // Use timestamp as unique ID
+        name: itemName,
+        price: parseFloat(itemPrice),
+        quantity: 1
+      };
+
+      if (enhancedCart) {
+        enhancedCart.addItem(item);
+      } else {
+        showNotification('Cart system loading... please try again', 'error');
+      }
+    }
+
+    // Render Menu Dynamically
+    async function renderMenu() {
+      try {
+        const products = await api.getMenu();
+        const container = document.getElementById('dynamic-menu');
+        container.innerHTML = '';
+
+        // Group by category
+        const categories = {};
+        products.forEach(p => {
+          const cat = p.category || 'Other';
+          if (!categories[cat]) categories[cat] = [];
+          categories[cat].push(p);
+        });
+
+        // Render categories
+        for (const [category, items] of Object.entries(categories)) {
+          // Category Title
+          const catTitle = document.createElement('h2');
+          catTitle.textContent = category;
+          container.appendChild(catTitle);
+
+          // Items Grid
+          const grid = document.createElement('div');
+          grid.className = 'menu-items';
+
+          items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'menu-item';
+            div.innerHTML = `
+                        <img src="${item.image_url || 'images/placeholder.jpg'}" alt="${item.name}" onerror="this.src='images/placeholder.jpg'"> <!-- Basic Error Handling -->
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <span class="price">$${item.price.toFixed(2)}</span>
+                        <button onclick="addItemToCart('${item.name.replace(/'/g, "\\'")}', '${item.price}')" class="add-to-cart-btn">Add to Cart</button>
+                    `;
+            grid.appendChild(div);
+          });
+
+          container.appendChild(grid);
+        }
+
+      } catch (error) {
+        console.error('Error loading menu:', error);
+        document.getElementById('dynamic-menu').innerHTML = '<p>Error loading menu. Please try again later.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderMenu);
+  </script>
+</body>
+
+</html>

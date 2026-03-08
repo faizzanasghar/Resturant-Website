@@ -1,0 +1,97 @@
+/* Reset some default styles */
+body, h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+
+  
+}
+
+/* Navigation Bar */
+.navbar {
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+}
+
+.navbar ul li {
+  font-size: 1.3em;
+  margin: 0 15px;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ff6347; /* Tomato color */
+}
+
+/* Contact Section */
+.contact-section {
+  background-image: url('images/Z6.jpg');
+  padding: 40px 20px;
+  text-align: center;
+
+}
+
+.contact-section h2 {
+  background-color:rgba(255,255,255,0.5) ;
+  margin-bottom: 20px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color:rgba(255,255,255,0.5);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+ 
+}
+
+.contact-item img {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  margin-right: 15px;
+}
+
+.contact-item p {
+  font-size: 1.1em;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}

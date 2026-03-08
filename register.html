@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up for Delizia Craft Pizza to get started with our menu and offers.">
+    <title>Sign Up - Delizia Craft Pizza</title>
+    <link rel="stylesheet" href="styles-modern.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="practicepage.html" class="logo">
+                <img src="images/webpage logo2.jpg" alt="Delizia Craft" class="logo-img">
+            </a>
+            <ul>
+                <li><a href="practicepage.html">Home</a></li>
+                <li><a href="products.html">Menu</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="login.html">Log In</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sign Up Section -->
+    <section>
+        <div class="signup-container">
+            <h2>Sign Up</h2>
+            <div id="error-message" class="error-message"></div>
+            <form id="signup">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="error-text"></span>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account?<a href="login.html">Login</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Delizia Craft Pizza. All rights reserved</p>
+    </footer>
+
+    <script>
+        document.getElementById('signup').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('first-name');
+            const lastName = document.getElementById('last-name');
+            const dob = document.getElementById('dob');
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            let isValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-text').forEach(el => {
+                el.textContent = '';
+                el.classList.remove('show');
+            });
+            errorMessage.classList.remove('show', 'success');
+
+            // Validate first name
+            if (firstName.value.trim() === '') {
+                firstName.nextElementSibling.textContent = 'First name is required';
+                firstName.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else if (firstName.value.trim().length < 2) {
+                firstName.nextElementSibling.textContent = 'First name must be at least 2 characters';
+                firstName.nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+
+            // Validate last name
+            if (lastName.value.trim() === '') {
+                lastName.nextElementSibling.textContent = 'Last name is required';
+                lastName.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else if (lastName.value.trim().length < 2) {
+                lastName.nextElementSibling.textContent = 'Last name must be at least 2 characters';
+                lastName.nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+
+            // Validate date of birth
+            if (dob.value === '') {
+                dob.nextElementSibling.textContent = 'Date of birth is required';
+                dob.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else {
+                const birthDate = new Date(dob.value);
+                const today = new Date();
+                const age = today.getFullYear() - birthDate.getFullYear();
+                if (age < 13) {
+                    dob.nextElementSibling.textContent = 'You must be at least 13 years old';
+                    dob.nextElementSibling.classList.add('show');
+                    isValid = false;
+                }
+            }
+
+            // Validate username
+            if (username.value.trim() === '') {
+                username.nextElementSibling.textContent = 'Username is required';
+                username.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else if (username.value.trim().length < 3) {
+                username.nextElementSibling.textContent = 'Username must be at least 3 characters';
+                username.nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+
+            // Validate password
+            if (password.value === '') {
+                password.nextElementSibling.textContent = 'Password is required';
+                password.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else if (password.value.length < 6) {
+                password.nextElementSibling.textContent = 'Password must be at least 6 characters';
+                password.nextElementSibling.classList.add('show');
+                isValid = false;
+            } else if (!/[a-z]/.test(password.value) || !/[0-9]/.test(password.value)) {
+                password.nextElementSibling.textContent = 'Password must contain a letter and a number';
+                password.nextElementSibling.classList.add('show');
+                isValid = false;
+            }
+
+            if (isValid) {
+                try {
+                    const loader = showLoader();
+                    const email = document.getElementById('email').value;
+                    const result = await api.register(
+                        firstName.value,
+                        lastName.value,
+                        email,
+                        username.value,
+                        password.value,
+                        dob.value
+                    );
+                    hideLoader(loader);
+
+                    if (result.success) {
+                        errorMessage.textContent = 'Registration successful! Redirecting...';
+                        errorMessage.classList.add('show', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1500);
+                    }
+                } catch (error) {
+                    if (window.hideLoader) hideLoader(document.getElementById('globalLoader'));
+                    errorMessage.textContent = error.message;
+                    errorMessage.classList.add('show');
+                }
+            }
+        });
+    </script>
+    <script src="api-client.js"></script>
+</body>
+
+</html>
